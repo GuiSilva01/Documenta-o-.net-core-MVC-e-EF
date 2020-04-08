@@ -22,7 +22,7 @@ namespace TestCRUDProducao.Controllers
         // GET: Producaos
         public async Task<IActionResult> Index()
         {
-            var schoolContext = _context.Producaos.Include(p => p.Produto).OrderBy(x => x.Data);
+            var schoolContext = _context.Producaos.Include(p => p.Produto).OrderBy(x => x.Lote);
             return View(await schoolContext.ToListAsync());
         }
 

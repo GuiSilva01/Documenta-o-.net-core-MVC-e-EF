@@ -18,6 +18,7 @@ namespace TestCRUDProducao.Models
         public DateTime Data { get; set; }
         public string Equipamento { get; set; }
         public string Lote { get; set; }
+        public int Quantidade { get; set; }
         public string Observacao { get; set; }
 
         public Produto Produto { get; set; }
