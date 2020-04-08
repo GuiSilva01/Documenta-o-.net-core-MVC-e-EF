@@ -20,10 +20,29 @@ namespace TestCRUDProducao.Controllers
         }
 
         // GET: Producaos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var schoolContext = _context.Producaos.Include(p => p.Produto).OrderBy(x => x.Lote);
-            return View(await schoolContext.ToListAsync());
+            ViewData["ProdutoSortParm"] = String.IsNullOrEmpty(sortOrder) ? "produto_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            var producaos = from p in _context.Producaos.Include(p => p.Produto)
+                            select p;
+
+            switch (sortOrder)
+            {
+                case "produto_desc":
+                    producaos = producaos.OrderByDescending(s => s.Produto.Nome);
+                    break;
+                case "Date":
+                    producaos = producaos.OrderBy(p => p.Data);
+                    break;
+                case "date_desc":
+                    producaos = producaos.OrderByDescending(p => p.Data);
+                    break;
+                default:
+                    producaos = producaos.OrderBy(s => s.Lote);
+                    break;
+            }
+            return View(await producaos.AsNoTracking().ToListAsync());
         }
 
         // GET: Producaos/Details/5
